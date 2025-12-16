@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ultimate Prompt Engineering Masterclass - Learn AI Communication, Context, and Prompt Design.">
+    <title>OMEGA AI: Ultimate Prompt Engineering Masterclass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-panel: #1e293b;
+            --accent: #fbbf24; /* Gold */
+            --accent-glow: rgba(251, 191, 36, 0.2);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --error: #ef4444;
+            --font-main: 'Hind Siliguri', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Container */
+        #app-container {
+            width: 100%;
+            max-width: 1000px;
+            height: 95vh;
+            background: var(--bg-panel);
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #334155;
+            position: relative;
+        }
+
+        /* Header */
+        header {
+            padding: 20px;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.95);
+        }
+        .brand { font-size: 1.2rem; font-weight: 700; color: var(--accent); letter-spacing: 1px; }
+        .brand i { margin-right: 8px; }
+        .progress-bar { width: 150px; height: 6px; background: #334155; border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s ease; }
+
+        /* Main Content Area */
+        main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+        }
+
+        /* Screens */
+        .screen { display: none; animation: fadeIn 0.4s ease; }
+        .screen.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Typography */
+        h1 { font-size: 2.5rem; margin-bottom: 15px; line-height: 1.2; }
+        h2 { font-size: 1.8rem; color: var(--accent); margin-bottom: 20px; }
+        h3 { font-size: 1.4rem; margin: 25px 0 15px; color: #e2e8f0; border-left: 4px solid var(--accent); padding-left: 15px; }
+        p { font-size: 1.1rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 15px; }
+        ul { margin-left: 25px; margin-bottom: 20px; color: #cbd5e1; }
+        li { margin-bottom: 10px; }
+        
+        .highlight { color: var(--accent); font-weight: 600; }
+        .code-box { background: #0f172a; padding: 15px; border-radius: 6px; font-family: monospace; border: 1px solid #334155; color: #a5b4fc; margin: 15px 0; }
+
+        /* Cards */
+        .tadabbur-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid var(--accent);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            position: relative;
+        }
+        /* CORRECTED ICON: STAR AND CRESCENT */
+        .tadabbur-card::before {
+            content: '\f699'; 
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            font-size: 2rem;
+            color: var(--accent);
+            background: var(--bg-panel);
+            padding: 0 10px;
+        }
+
+        /* Interactive Lab */
+        .lab-container { background: #0f172a; padding: 25px; border-radius: 8px; border: 1px solid #334155; margin-top: 20px; }
+        .lab-step { display: none; }
+        .lab-step.active { display: block; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .btn-opt {
+            background: #1e293b; border: 1px solid #475569; color: white; padding: 15px;
+            border-radius: 6px; cursor: pointer; text-align: left; transition: all 0.2s;
+            font-family: var(--font-main); font-size: 1rem;
+        }
+        .btn-opt:hover { border-color: var(--accent); background: #334155; }
+        .btn-primary {
+            background: var(--accent); color: #0f172a; border: none; padding: 12px 30px;
+            font-weight: 700; border-radius: 6px; cursor: pointer; font-size: 1.1rem;
+            margin-top: 20px; display: inline-block;
+        }
+        .btn-primary:hover { background: #fbbf24; box-shadow: 0 0 15px var(--accent-glow); }
+
+        /* Exam */
+        .question-card { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid #334155; }
+        .exam-opt { display: block; padding: 10px; background: #0f172a; margin: 5px 0; border-radius: 4px; cursor: pointer; border: 1px solid transparent; }
+        .exam-opt:hover { border-color: #475569; }
+        .exam-opt.selected { border-color: var(--accent); background: #334155; }
+
+        /* Feedback Modal */
+        #feedback-area { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; }
+        .feedback-correct { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); }
+        .feedback-wrong { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error); color: var(--error); }
+
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <header>
+        <div class="brand"><i class="fas fa-brain"></i> ZENMATRICS OMEGA</div>
+        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    </header>
+
+    <main>
+        <div id="lobby" class="screen active">
+            <div style="text-align: center; padding-top: 50px;">
+                <i class="fas fa-terminal" style="font-size: 4rem; color: var(--accent); margin-bottom: 20px;"></i>
+                <h1>Prompt Engineering Masterclass</h1>
+                <p style="font-size: 1.3rem;">Mastering the Art of Communication with Artificial Intelligence</p>
+                <div style="margin: 30px 0; display: flex; justify-content: center; gap: 20px;">
+                    <div><i class="fas fa-clock"></i> 3 Hours</div>
+                    <div><i class="fas fa-layer-group"></i> 5 Modules</div>
+                    <div><i class="fas fa-certificate"></i> Certification</div>
+                </div>
+                <button class="btn-primary" onclick="startCourse()">Initialize System <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <div id="classroom" class="screen">
+            <h2 id="mod-title">Module Title</h2>
+            <div id="mod-content"></div>
+            
+            <div class="lab-container">
+                <h3><i class="fas fa-flask"></i> Omega Lab: Simulation</h3>
+                <div id="lab-area"></div>
+            </div>
+
+            <div style="margin-top: 30px; text-align: right;">
+                <button class="btn-primary" id="next-btn" onclick="nextModule()" style="display:none;">Next Module <i class="fas fa-forward"></i></button>
+            </div>
+        </div>
+
+        <div id="exam" class="screen">
+            <h2><i class="fas fa-file-signature"></i> Final Assessment</h2>
+            <p>Prove your mastery. Select the correct prompt logic.</p>
+            <div id="quiz-area"></div>
+            <button class="btn-primary" onclick="submitExam()">Submit Assessment</button>
+        </div>
+
+        <div id="result" class="screen">
+            <div style="text-align: center; padding-top: 50px;">
+                <i id="result-icon" class="fas fa-medal" style="font-size: 4rem; color: var(--accent); margin-bottom: 20px;"></i>
+                <h1 id="score-display">0%</h1>
+                <p id="result-msg">Analysis Complete.</p>
+                <button class="btn-primary" onclick="location.reload()">Restart Protocol</button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+/* ZENMATRICS OMEGA ENGINE v5.1 
+   Architect: S M Ashique
+   Topic: Prompt Engineering Basics
+*/
+
+const courseData = {
+    title: "Prompt Engineering Basics",
+    duration: "3 Hours",
+    modules: [
+        {
+            title: "Module 1: The Foundation - Intent & Clarity",
+            visual: "🎯",
+            theory: `
+                <p>Prompt Engineering is not coding; it is the art of <b>precise communication</b>. An AI model is a probabilistic engine, predicting the next word based on the context you provide.</p>
+                <h3>The Core Principle</h3>
+                <p>The quality of the output is directly proportional to the clarity of the input. Vague prompts yield vague results.</p>
+                <div class="code-box">
+                    ❌ <b>Weak:</b> "Write something about marketing."<br>
+                    ✅ <b>Strong:</b> "Write a 3-paragraph email introduction for a freelance graphic designer targeting small tech startups."
+                </div>
+                <ul>
+                    <li><b>Instruction:</b> What do you want the AI to do?</li>
+                    <li><b>Context:</b> Who is it for? What is the background?</li>
+                    <li><b>Format:</b> How should the output look?</li>
+                </ul>
+            `,
+            sakina: `
+                <p>Reflect upon the concept of <i>Niyyah</i> (Intention). In our spiritual lives, actions are judged by intentions. However, the intention must be clear and focused for the action to be accepted.</p>
+                <p>Just as we must be clear in our supplications (Du'a) to the Creator—knowing exactly what we seek—we must practice clarity in our speech and commands. Ambiguity creates confusion; precision brings peace.</p>
+            `,
+            lab: {
+                question: "You need a recipe for a healthy dinner. Which prompt provides the best 'Context' and 'Constraints'?",
+                steps: [
+                    {
+                        instr: "Select the most effective prompt structure:",
+                        opts: [
+                            { t: "Give me a healthy dinner recipe please.", c: false, h: "This is polite, but lacks constraints. The AI doesn't know what ingredients you have or your diet." },
+                            { t: "Act as a nutritionist. Create a keto-friendly dinner recipe under 500 calories using chicken and spinach.", c: true, x: "Excellent. You defined the Persona (Nutritionist), Constraints (Keto, <500 cal), and Ingredients." }
+                        ],
+                        val: "Logic verified. Context is king."
+                    }
+                ]
+            }
+        },
+        {
+            title: "Module 2: The Persona - Setting the Role",
+            visual: "🎭",
+            theory: `
+                <p>AI models have been trained on vast amounts of data, from medical texts to poetry. By assigning a <b>Persona</b>, you narrow down the model's focus to a specific slice of that data.</p>
+                <h3>System Prompts</h3>
+                <p>Telling the AI <i>who</i> it is changes <i>how</i> it speaks.</p>
+                <div class="code-box">
+                    <b>Prompt:</b> "Explain Quantum Physics."<br>
+                    <b>Modifier 1:</b> "Act as a University Professor." (Result: Academic, dense)<br>
+                    <b>Modifier 2:</b> "Act as a Comedian." (Result: Humorous, simplified)
+                </div>
+            `,
+            sakina: `
+                <p>Consider the concept of <i>Adab</i> (Etiquette) appropriate for every situation. A believer speaks differently to their mother than to a merchant or a child. It is not hypocrisy; it is wisdom and appropriateness.</p>
+                <p>In prompt engineering, assigning a role ensures the AI speaks with the appropriate 'Adab' for the task at hand.</p>
+            `,
+            lab: {
+                question: "We need to explain 'Inflation' to a 10-year-old. Set the persona.",
+                steps: [
+                    {
+                        instr: "Choose the best persona activator:",
+                        opts: [
+                            { t: "You are a Senior Economist at the World Bank.", c: false, h: "This persona will likely use jargon too complex for a child." },
+                            { t: "You are a friendly elementary school teacher who loves analogies.", c: true, x: "Perfect. This instructs the AI to simplify language and use relatable stories." }
+                        ],
+                        val: "Persona Locked. Adaptation successful."
+                    }
+                ]
+            }
+        },
+        {
+            title: "Module 3: Few-Shot Prompting - Teaching by Example",
+            visual: "🧠",
+            theory: `
+                <p>Often, telling the AI what to do isn't enough. You must <b>show</b> it.</p>
+                <ul>
+                    <li><b>Zero-Shot:</b> Asking without examples.</li>
+                    <li><b>One-Shot:</b> Providing one example.</li>
+                    <li><b>Few-Shot:</b> Providing multiple examples (Input -> Output).</li>
+                </ul>
+                <p>Few-Shot prompting drastically improves pattern recognition and format adherence.</p>
+                <div class="code-box">
+                    <b>Task:</b> Convert slang to formal English.<br>
+                    <b>Example 1:</b> "Sup?" -> "Greetings, how are you?"<br>
+                    <b>Example 2:</b> "Gotta bounce." -> "I must depart now."<br>
+                    <b>Input:</b> "No way!" -> [AI completes pattern]
+                </div>
+            `,
+            sakina: `
+                <p>Think of how we learn from the stories of the Righteous (the Salaf). We are not just told "be good"; we are given examples of <i>how</i> they acted in specific situations.</p>
+                <p>Examples provide the blueprint for behavior. When we guide the AI with examples, we are providing a path to follow, reducing the chance of error.</p>
+            `,
+            lab: {
+                question: "You want the AI to categorize support tickets into 'Urgent', 'Normal', or 'Low'.",
+                steps: [
+                    {
+                        instr: "Which approach ensures the highest accuracy?",
+                        opts: [
+                            { t: "Just ask: 'Categorize this ticket: My computer is on fire.'", c: false, h: "The AI might guess right, but without examples of your specific criteria, it's risky." },
+                            { t: "Provide 3 examples of past tickets and their correct tags, then ask for the new one.", c: true, x: "Correct. Showing the AI your logic via examples (Few-Shot) aligns its reasoning with yours." }
+                        ],
+                        val: "Pattern recognized. Consistency achieved."
+                    }
+                ]
+            }
+        },
+        {
+            title: "Module 4: Chain of Thought - Reasoning Steps",
+            visual: "🔗",
+            theory: `
+                <p>For complex logic or math, LLMs often fail if asked for the answer directly. <b>Chain of Thought (CoT)</b> prompting encourages the AI to "show its work."</p>
+                <h3>The Magic Phrase</h3>
+                <p>Adding <i>"Let's think step by step"</i> significantly boosts logical accuracy. It forces the model to generate intermediate reasoning steps before arriving at the final answer.</p>
+            `,
+            sakina: `
+                <p>Wisdom is not rushed. The Quran was revealed in stages (gradually) to strengthen the heart. Deep understanding comes from contemplation (Tafakkur), step by step, not instant gratification.</p>
+                <p>Encouraging the system to process 'step-by-step' mirrors the human need for patience and logical progression in solving life's difficulties.</p>
+            `,
+            lab: {
+                question: "Solve a logic puzzle: 'I have 3 apples. I eat 1. I buy 2 more. I drop 1. How many do I have?'",
+                steps: [
+                    {
+                        instr: "Select the prompt that avoids calculation errors:",
+                        opts: [
+                            { t: "Answer: [Number]", c: false, h: "Direct answers in logic puzzles often lead to hallucinations." },
+                            { t: "Think through this step-by-step and show your calculation before answering.", c: true, x: "Mashallah. Breaking it down prevents the AI from skipping logic." }
+                        ],
+                        val: "Reasoning validated. Logic is sound."
+                    }
+                ]
+            }
+        },
+        {
+            title: "Module 5: Ethical Guardrails & Safety",
+            visual: "🛡️",
+            theory: `
+                <p>Power comes with responsibility. AI can hallucinate (lie confidently) or be biased. Prompt Engineering includes <b>defensive</b> strategies.</p>
+                <ul>
+                    <li><b>Hallucination Check:</b> "If you do not know the answer, say 'I don't know', do not make it up."</li>
+                    <li><b>Bias Mitigation:</b> "Provide an objective summary covering multiple viewpoints."</li>
+                    <li><b>Injection Defense:</b> Ensuring prompts cannot be overridden by external user input.</li>
+                </ul>
+            `,
+            sakina: `
+                <p>We are accountable for our tools. A knife can cut bread or cause harm; the user bears the burden. Islam teaches us to guard our tongue and avoid spreading falsehood.</p>
+                <p>We must engineer our prompts to prioritize truth (Haqq) over convenience, ensuring we do not generate misleading or harmful content.</p>
+            `,
+            lab: {
+                question: "You need a medical summary but want to avoid fake citations.",
+                steps: [
+                    {
+                        instr: "What is the critical safety instruction?",
+                        opts: [
+                            { t: "Write a summary and make it look professional.", c: false, h: "Looking professional isn't the same as being accurate." },
+                            { t: "Summarize using only provided facts. Citations must be from the input text only.", c: true, x: "Excellent. You have grounded the AI to the truth of the source material." }
+                        ],
+                        val: "Safety protocols engaged. Integrity maintained."
+                    }
+                ]
+            }
+        }
+    ],
+    exam: [
+        { q: "What is the primary function of a 'System Prompt'?", o: ["To speed up the internet", "To define the AI's persona and behavior", "To delete old data", "To translate code"], a: 1 },
+        { q: "Which technique involves providing examples in the prompt?", o: ["Zero-Shot", "Few-Shot", "Snapshot", "Hot-Shot"], a: 1 },
+        { q: "Why is 'Let's think step by step' effective?", o: ["It forces the AI to use Chain of Thought reasoning", "It makes the AI slower", "It accesses the internet", "It increases font size"], a: 0 },
+        { q: "What is an AI Hallucination?", o: ["A visual glitch", "Confident but factually incorrect output", "The AI becoming sentient", "A virus"], a: 1 },
+        { q: "To get the best recipe result, you should provide:", o: ["Just the name of the dish", "Context, constraints, and ingredients", "A polite greeting only", "A vague request"], a: 1 },
+        { q: "Which is a 'Constraint' in a prompt?", o: ["Write a story", "Act as a poet", "Use under 50 words", "Hello AI"], a: 2 },
+        { q: "Ethical prompting requires checking for:", o: ["Spelling errors only", "Bias and Hallucinations", "Color schemes", "Wi-Fi strength"], a: 1 },
+        { q: "Prompt Engineering is best described as:", o: ["Computer programming", "Optimizing inputs to guide AI outputs", "fixing hardware", "Writing a novel"], a: 1 }
+    ]
+};
+
+// APP STATE
+let currentModule = 0;
+let score = 0;
+
+// INIT
+function startCourse() {
+    document.getElementById('lobby').classList.remove('active');
+    document.getElementById('classroom').classList.add('active');
+    loadModule(0);
+}
+
+// RENDER MODULE
+function loadModule(index) {
+    currentModule = index;
+    const mod = courseData.modules[index];
+    
+    // Update Progress
+    const pct = ((index) / courseData.modules.length) * 100;
+    document.getElementById('progress').style.width = pct + "%";
+
+    // Render Content
+    document.getElementById('mod-title').innerHTML = `${mod.visual} ${mod.title}`;
+    
+    let html = `
+        <div style="margin-bottom: 30px;">${mod.theory}</div>
+        <div class="tadabbur-card">
+            <h4><i class="fas fa-star-and-crescent"></i> The Connection</h4>
+            ${mod.sakina}
+        </div>
+    `;
+    document.getElementById('mod-content').innerHTML = html;
+
+    // Render Lab
+    renderLab(mod.lab);
+
+    // Button State
+    document.getElementById('next-btn').style.display = 'none';
+}
+
+function renderLab(labData) {
+    const labArea = document.getElementById('lab-area');
+    labArea.innerHTML = `
+        <p style="font-size:1.2rem; color: #fff; margin-bottom:20px;">${labData.question}</p>
+        <div id="lab-steps-container"></div>
+        <div id="feedback-area"></div>
+    `;
+    
+    const container = document.getElementById('lab-steps-container');
+    
+    labData.steps.forEach((step, sIdx) => {
+        const stepDiv = document.createElement('div');
+        stepDiv.className = `lab-step ${sIdx === 0 ? 'active' : ''}`;
+        stepDiv.id = `step-${sIdx}`;
+        
+        let optsHtml = '';
+        step.opts.forEach((opt, oIdx) => {
+            optsHtml += `<div class="btn-opt" onclick="checkLab(${sIdx}, ${oIdx}, ${opt.c})">${opt.t}</div>`;
+        });
+
+        stepDiv.innerHTML = `
+            <p><b>Step ${sIdx+1}:</b> ${step.instr}</p>
+            <div class="options-grid">${optsHtml}</div>
+        `;
+        container.appendChild(stepDiv);
+    });
+}
+
+function checkLab(stepIdx, optIdx, isCorrect) {
+    const mod = courseData.modules[currentModule];
+    const stepObj = mod.lab.steps[stepIdx];
+    const optObj = stepObj.opts[optIdx];
+    const fbArea = document.getElementById('feedback-area');
+    
+    fbArea.style.display = 'block';
+    
+    if (isCorrect) {
+        fbArea.className = 'feedback-correct';
+        fbArea.innerHTML = `<b><i class="fas fa-check-circle"></i> Correct:</b> ${optObj.x}`;
+        
+        // Show next button or unlock next module
+        setTimeout(() => {
+            if (stepIdx < mod.lab.steps.length - 1) {
+                document.getElementById(`step-${stepIdx}`).classList.remove('active');
+                document.getElementById(`step-${stepIdx+1}`).classList.add('active');
+                fbArea.style.display = 'none';
+            } else {
+                document.getElementById('next-btn').style.display = 'inline-block';
+                fbArea.innerHTML += `<br><br><b>${stepObj.val}</b>`;
+            }
+        }, 1500);
+    } else {
+        fbArea.className = 'feedback-wrong';
+        fbArea.innerHTML = `<b><i class="fas fa-times-circle"></i> Try Again:</b> ${optObj.h}`;
+    }
+}
+
+function nextModule() {
+    if (currentModule < courseData.modules.length - 1) {
+        loadModule(currentModule + 1);
+        document.querySelector('main').scrollTop = 0;
+    } else {
+        startExam();
+    }
+}
+
+// EXAM LOGIC
+function startExam() {
+    document.getElementById('classroom').classList.remove('active');
+    document.getElementById('exam').classList.add('active');
+    document.getElementById('progress').style.width = "100%";
+    
+    const area = document.getElementById('quiz-area');
+    let html = '';
+    
+    courseData.exam.forEach((q, idx) => {
+        let opts = '';
+        q.o.forEach((opt, oIdx) => {
+            opts += `<label class="exam-opt"><input type="radio" name="q${idx}" value="${oIdx}"> ${opt}</label>`;
+        });
+        
+        html += `
+            <div class="question-card">
+                <p><b>Q${idx+1}:</b> ${q.q}</p>
+                ${opts}
+            </div>
+        `;
+    });
+    
+    area.innerHTML = html;
+}
+
+function submitExam() {
+    let correct = 0;
+    const total = courseData.exam.length;
+    
+    courseData.exam.forEach((q, idx) => {
+        const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+        if (selected && parseInt(selected.value) === q.a) {
+            correct++;
+        }
+    });
+    
+    score = Math.round((correct / total) * 100);
+    showResult();
+}
+
+function showResult() {
+    document.getElementById('exam').classList.remove('active');
+    document.getElementById('result').classList.add('active');
+    
+    const scoreDisplay = document.getElementById('score-display');
+    const msg = document.getElementById('result-msg');
+    
+    scoreDisplay.innerText = score + "%";
+    
+    if (score >= 80) {
+        msg.innerHTML = "Mashallah! Exceptional Mastery. <br>System Unlocked.";
+        document.getElementById('result-icon').className = "fas fa-trophy";
+    } else {
+        msg.innerHTML = "Process Incomplete. Review modules and retry.";
+        document.getElementById('result-icon').className = "fas fa-redo";
+    }
+}
+</script>
+</body>
+</html>
